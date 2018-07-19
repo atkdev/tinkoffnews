@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.tinkoff.news.features.newscontent.presentation.NewsContentActivity.BindingModel"/>
+        <variable
+            name="presenter"
+            type="com.tinkoff.news.features.newscontent.presentation.NewsContentPresenter"/>
+        <import type="android.view.View" />
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.newscontent.presentation.NewsContentActivity"
+    android:orientation="vertical">
+    <include
+        layout="@layout/data_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"
+        android:visibility="@{ safeUnbox(model.loading) ? View.VISIBLE : View.GONE }"
+        app:actionHandler="@{ presenter }"
+        app:message="@{ safeUnbox(model.showError) ? @string/news_content_loading_failed : null }" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="@{ safeUnbox(model.loading) ? View.GONE : View.VISIBLE }">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="#777777"
+            android:textSize="16sp"
+            tools:text="Текст новости"
+            android:text="@{ model.newsContent.text }"/>
+    </ScrollView>
+
+
+</LinearLayout>
+</layout>

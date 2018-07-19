@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="colors_swiperefresh">
+        <item>@color/colorPrimary</item>
+    </integer-array>
+</resources>

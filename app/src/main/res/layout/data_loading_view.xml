@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="message"
+            type="String"/>
+        <variable
+            name="actionHandler"
+            type="com.tinkoff.news.utils.presentation.DataLoadingViewActionHandler"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{ message == null ? View.VISIBLE : View.GONE }"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            tools:text="Не удалось загрузить данные"
+            android:gravity="center"
+            android:text="@{message}"
+            android:visibility="@{ message == null ? View.GONE : View.VISIBLE }"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAllCaps="false"
+            android:text="@string/data_loading_retry"
+            android:visibility="@{ message == null ? View.GONE : View.VISIBLE }"
+            android:onClick="@{ () -> actionHandler.tryReloadData() }"/>
+    </LinearLayout>
+</layout>

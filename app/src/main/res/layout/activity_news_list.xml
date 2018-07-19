@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.tinkoff.news.features.newslist.presentation.NewsListActivity.BindingModel" />
+        <variable
+            name="presenter"
+            type="com.tinkoff.news.features.newslist.presentation.NewsListPresenter"/>
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/data_loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{ safeUnbox(model.loading) ? View.VISIBLE : View.GONE }"
+            app:actionHandler="@{ presenter }"
+            app:message="@{ safeUnbox(model.showError) ? @string/news_list_loading_failed : null }" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
+            app:colorSchemeResources="@{ @intArray/colors_swiperefresh }"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onRefreshListener="@{ () -> presenter.tryReloadData() }">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:visibility="@{ safeUnbox(model.loading) ? View.GONE : View.VISIBLE }"
+            adapter="@{ model.adapter }"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

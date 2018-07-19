@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="item"
+            type="com.tinkoff.news.features.newslist.presentation.NewsListActivity.NewsListItemBindingModel"/>
+    </data>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:text="@{ item.text }"
+        android:onClick="@{ ()->item.onClick() }"
+        android:background="?selectableItemBackground"/>
+</layout>
