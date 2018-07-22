@@ -13,6 +13,7 @@ import com.github.nitrico.lastadapter.LastAdapter
 import com.tinkoff.news.BR
 import com.tinkoff.news.R
 import com.tinkoff.news.databinding.ActivityNewsListBinding
+import com.tinkoff.news.di.inject
 import com.tinkoff.news.features.newscontent.presentation.NewsContentActivity
 import com.tinkoff.news.features.newslist.domain.model.NewsListItem
 import com.tinkoff.news.utils.text.fromHtml
@@ -77,10 +78,7 @@ class NewsListActivity : AppCompatActivity() {
                 }
                 is NewsListViewState.Data -> {
                     bindingModel.loading.set(false)
-                    val newItems = state.newsList
-                            .sortedByDescending { it.publicationDate }
-                            .map { NewsListItemBindingModel(it) }
-                    patchNewsListWith(newItems)
+                    patchNewsListWith(state.newsList)
                 }
             }
         })
@@ -96,22 +94,34 @@ class NewsListActivity : AppCompatActivity() {
         })
     }
 
-    private fun patchNewsListWith(newItems: List<NewsListItemBindingModel>) {
-        for (i in 0 until newItems.count()) {
+    private fun patchNewsListWith(newItems: List<NewsListItem>) {
 
-            val newsList = bindingModel.newsList
+        val curItems = bindingModel.newsList.map { it.model }.toMutableList()
+        val newsList = bindingModel.newsList
 
-            when {
-                newsList.count() == 0 -> newsList.addAll(newItems)
-                i >= newsList.count() -> newsList.add( newItems[i] )
-                else -> {
-                    if (newsList[i] != newsList[i]) {
-                        newsList.removeAt(i)
-                        newsList.add(i, newItems[i])
+        if(curItems.count() == 0) {
+            newsList.addAll(
+                    newItems.map {
+                        NewsListItemBindingModel(it)
+                    }
+            )
+        } else {
+            for (i in 0 until newItems.count()) {
+                val item = NewsListItemBindingModel(newItems[i])
+                when {
+                    i >= curItems.count() -> newsList.add(item)
+                    else -> {
+                        if (curItems[i] != curItems[i]) {
+                            newsList.add(item)
+                            curItems.add(i, newItems[i])
+                        }
                     }
                 }
             }
 
+            if(newItems.count() < newsList.count()) {
+                newsList.subList(newItems.count(),newsList.count()).clear()
+            }
         }
     }
 
@@ -140,9 +150,8 @@ class NewsListActivity : AppCompatActivity() {
                         .map<NewsListItemBindingModel>(R.layout.item_news_list)
     }
 
-    inner class NewsListItemBindingModel(
-            private val model: NewsListItem
-    ) {
+    inner class NewsListItemBindingModel(val model: NewsListItem) {
+
         val text: Spanned
             get() = model.text.fromHtml()
 

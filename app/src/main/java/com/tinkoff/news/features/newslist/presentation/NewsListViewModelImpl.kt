@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
 import com.tinkoff.news.features.newslist.domain.NewsListInteractor
+import com.tinkoff.news.features.newslist.domain.model.NewsListItem
 import com.tinkoff.news.utils.presentation.ActionLiveData
 import com.tinkoff.news.utils.presentation.BaseViewModel
 import io.reactivex.Maybe
@@ -38,7 +39,7 @@ class NewsListViewModelImpl(
         disposables.add(
                 interactor.getCachedNewsList()
                         .doOnSuccess {
-                            state.value = NewsListViewState.Data(it)
+                            setNewsList(it)
                         }
                         .onErrorResumeNext{ err: Throwable ->
                             err.printStackTrace()
@@ -52,7 +53,7 @@ class NewsListViewModelImpl(
                         }
                         .subscribe(
                         {
-                            state.value = NewsListViewState.Data(it)
+                            setNewsList(it)
                         },
                         {
                             it.printStackTrace()
@@ -81,5 +82,13 @@ class NewsListViewModelImpl(
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         disposables.dispose()
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Methods
+    ///////////////////////////////////////////////////////////////////////////
+    private fun setNewsList(items: List<NewsListItem>) {
+        state.value = NewsListViewState.Data(items.sortedByDescending { it.publicationDate })
     }
 }

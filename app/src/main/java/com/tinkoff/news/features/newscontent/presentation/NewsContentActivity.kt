@@ -11,6 +11,7 @@ import android.text.Spanned
 import android.view.MenuItem
 import com.tinkoff.news.R
 import com.tinkoff.news.databinding.ActivityNewsContentBinding
+import com.tinkoff.news.di.inject
 import com.tinkoff.news.features.newscontent.domain.model.NewsContent
 import com.tinkoff.news.utils.text.fromHtml
 
