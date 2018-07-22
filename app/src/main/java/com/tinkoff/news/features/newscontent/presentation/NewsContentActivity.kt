@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Spanned
 import android.view.MenuItem
 import com.tinkoff.news.R
-import com.tinkoff.news.app.inject
 import com.tinkoff.news.databinding.ActivityNewsContentBinding
 import com.tinkoff.news.features.newscontent.domain.model.NewsContent
 import com.tinkoff.news.utils.text.fromHtml

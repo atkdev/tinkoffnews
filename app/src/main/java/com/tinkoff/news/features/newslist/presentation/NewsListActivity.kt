@@ -12,7 +12,6 @@ import android.text.Spanned
 import com.github.nitrico.lastadapter.LastAdapter
 import com.tinkoff.news.BR
 import com.tinkoff.news.R
-import com.tinkoff.news.app.inject
 import com.tinkoff.news.databinding.ActivityNewsListBinding
 import com.tinkoff.news.features.newscontent.presentation.NewsContentActivity
 import com.tinkoff.news.features.newslist.domain.model.NewsListItem
